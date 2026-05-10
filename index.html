@@ -1,0 +1,256 @@
+<!DOCTYPE html><html lang="en"><head>
+<link rel="preconnect" href="https://www.gstatic.com"/>
+<link rel="dns-prefetch" href="https://www.gstatic.com"/>
+<link rel="preconnect" href="https://firestore.googleapis.com"/>
+<link rel="dns-prefetch" href="https://firestore.googleapis.com"/>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>ZenithCrypto — SEASON</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script>(function(){var _x=atob('eyJhcGlLZXkiOiJBSXphU3lDSFJ3cV9EMFdtODNmSTZNcEVwT20tZjlJaXBsZzdUNVEiLCJhdXRoRG9tYWluIjoidGl0YW4tYXBleC1tdWx0aXBsYXllci5maXJlYmFzZWFwcC5jb20iLCJwcm9qZWN0SWQiOiJ0aXRhbi1hcGV4LW11bHRpcGxheWVyIiwic3RvcmFnZUJ1Y2tldCI6InRpdGFuLWFwZXgtbXVsdGlwbGF5ZXIuZmlyZWJhc2VzdG9yYWdlLmFwcCIsIm1lc3NhZ2luZ1NlbmRlcklkIjoiNDEzODUwMDczNDgxIiwiYXBwSWQiOiIxOjQxMzg1MDA3MzQ4MTp3ZWI6ODM0ZGVmNTlmNDA3OTRkMjE4MDk1OCIsImRhdGFiYXNlVVJMIjoiaHR0cHM6Ly90aXRhbi1hcGV4LW11bHRpcGxheWVyLWRlZmF1bHQtcnRkYi5hc2lhLXNvdXRoZWFzdDEuZmlyZWJhc2VkYXRhYmFzZS5hcHAifQ==');try{window._FC=JSON.parse(_x);}catch(e){}})();
+var db=null,auth=null,FS=null,G={};</script>
+<script>(function(){var _t=null;window._showOffline=function(m){if(document.getElementById('_zco'))return;var d=document.createElement('div');d.id='_zco';d.style.cssText='position:fixed;inset:0;z-index:99999;background:#04060e;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:30px;text-align:center;font-family:Orbitron,monospace';d.innerHTML='<div style="font-size:3rem">📡</div><div style="font-size:.9rem;font-weight:900;color:#eaecf0;letter-spacing:2px">CONNECTION LOST</div><div style="font-size:.5rem;color:#6c7a96;line-height:2;max-width:260px">'+(m||'No internet')+'<br><span id="_zco_cd">Retrying in 5s...</span></div><button onclick="window._retryNow&&window._retryNow()" style="padding:11px 26px;border-radius:10px;border:1.5px solid rgba(79,142,247,.4);background:rgba(79,142,247,.1);color:#4f8ef7;font-size:.52rem;cursor:pointer;font-weight:700;font-family:Orbitron,monospace">RETRY NOW</button>';document.body.appendChild(d);var c=5;_t=setInterval(function(){c--;var r=document.getElementById('_zco_cd');if(r)r.textContent=c>0?'Retrying in '+c+'s...':'Retrying...';if(c<=0){clearInterval(_t);window._retryNow&&window._retryNow();}},1000);};window._hideOffline=function(){var d=document.getElementById('_zco');if(d)d.remove();if(_t)clearInterval(_t);};window.addEventListener('online',function(){window._hideOffline();});window.addEventListener('offline',function(){window._showOffline('Internet lost.');});window.addEventListener('error',function(e){e.preventDefault();return true;},true);window.addEventListener('unhandledrejection',function(e){e.preventDefault();});})();</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#04060e;--s1:#080d18;--s2:#0c1220;--s3:#111929;--a:#4f8ef7;--gold:#e8b84b;--green:#0ecb81;--red:#f6465d;--purple:#7c5df7;--t1:#eaecf0;--t2:#6c7a96;--t3:#2d3a55;--fhd:'Orbitron',monospace;--fmono:'JetBrains Mono',monospace;--topH:54px}
+html,body{visibility:visible;height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',sans-serif}
+#topbar{height:var(--topH);background:rgba(7,9,15,.96);border-bottom:1px solid rgba(0,212,255,.12);display:flex;align-items:center;padding:0 14px;gap:8px;position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(20px)}
+.back{width:34px;height:34px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+#main{margin-top:var(--topH);padding-bottom:80px}
+.hero{padding:22px 16px;background:radial-gradient(ellipse 100% 70% at 50% 0%,rgba(124,93,247,.15),transparent 60%),var(--s1);border-bottom:1px solid rgba(124,93,247,.15);text-align:center}
+.season-card{background:linear-gradient(135deg,rgba(124,93,247,.12),rgba(79,142,247,.08));border:1px solid rgba(124,93,247,.25);border-radius:14px;margin:12px 14px;padding:16px}
+.reward-track{display:flex;gap:0;padding:0 14px;overflow-x:auto;scrollbar-width:none;margin-bottom:4px}
+.reward-track::-webkit-scrollbar{display:none}
+.rt-item{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:4px;width:64px;position:relative}
+.rt-item::after{content:'';position:absolute;top:20px;left:50%;width:100%;height:2px;background:rgba(255,255,255,.08);z-index:0}
+.rt-item:last-child::after{display:none}
+.rt-badge{width:40px;height:40px;border-radius:50%;background:var(--s2);border:2px solid rgba(124,93,247,.2);display:flex;align-items:center;justify-content:center;font-size:1rem;z-index:1;transition:.2s}
+.rt-badge.claimed{background:rgba(14,203,129,.15);border-color:var(--green)}
+.rt-badge.current{background:rgba(124,93,247,.2);border-color:var(--purple);box-shadow:0 0 12px rgba(124,93,247,.4)}
+.rt-label{font-family:var(--fhd);font-size:.3rem;color:var(--t3);text-align:center;line-height:1.3}
+.rt-reward{font-family:var(--fmono);font-size:.34rem;font-weight:700;color:var(--gold);text-align:center}
+.quest-card{background:var(--s1);border:1px solid rgba(255,255,255,.06);border-radius:12px;margin:6px 14px;padding:12px 14px;display:flex;align-items:center;gap:12px;animation:fi .3s ease both}
+.quest-icon{font-size:1.4rem;flex-shrink:0}
+.quest-prog-bar{background:var(--s2);border-radius:999px;height:5px;margin-top:5px;overflow:hidden}
+.quest-prog-fill{height:100%;border-radius:999px;background:var(--purple);transition:width .5s}
+.claim-btn{padding:8px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--purple),var(--a));color:#fff;font-family:var(--fhd);font-size:.44rem;font-weight:900;cursor:pointer;flex-shrink:0}
+.claim-btn:disabled{background:var(--s2);color:var(--t3);cursor:default}
+.spinner{width:22px;height:22px;border:2px solid rgba(124,93,247,.15);border-top-color:var(--purple);border-radius:50%;animation:sp .8s linear infinite;margin:28px auto}
+.tabs{display:flex;background:var(--s1);border-bottom:1px solid rgba(255,255,255,.05);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:12px 16px;font-family:var(--fhd);font-size:.5rem;font-weight:700;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.2s}
+.tab.active{color:var(--purple);border-bottom-color:var(--purple)}
+@keyframes sp{to{transform:rotate(360deg)}}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <div class="back" onclick="history.back()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+  <div style="font-family:var(--fhd);font-size:.72rem;font-weight:900;flex:1;letter-spacing:2px;background:linear-gradient(90deg,var(--purple),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">🌊 SEASON PASS</div>
+  <div id="sp-xp" style="font-family:var(--fhd);font-size:.38rem;color:var(--purple)">—</div>
+</div>
+<div id="main">
+  <div class="hero">
+    <div style="font-size:2.6rem;margin-bottom:8px">🌊</div>
+    <div style="font-family:var(--fhd);font-size:.9rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px">SEASON 1</div>
+    <div style="font-family:var(--fhd);font-size:.42rem;color:var(--t3);margin-top:4px;letter-spacing:2px">EARN XP • UNLOCK REWARDS • CLAIM PRIZES</div>
+    <div style="margin:14px 0 0;background:var(--s2);border-radius:12px;padding:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-family:var(--fhd);font-size:.44rem;color:var(--t2)">SEASON XP</div>
+        <div style="font-family:var(--fmono);font-size:.52rem;font-weight:700;color:var(--purple)" id="sp-xp-val">0 XP</div>
+      </div>
+      <div style="background:var(--s3);border-radius:999px;height:10px;overflow:hidden">
+        <div id="sp-bar" style="height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--a));width:0%;transition:width .8s ease"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-family:var(--fhd);font-size:.32rem;color:var(--t3);margin-top:4px">
+        <span>TIER <span id="sp-tier" style="color:var(--purple)">1</span></span>
+        <span id="sp-next">Next tier: 100 XP</span>
+      </div>
+    </div>
+  </div>
+  <div class="tabs" id="sp-tabs">
+    <div class="tab active" onclick="spTab(this,'rewards')">🎁 REWARDS</div>
+    <div class="tab" onclick="spTab(this,'quests')">📋 QUESTS</div>
+    <div class="tab" onclick="spTab(this,'info')">ℹ INFO</div>
+  </div>
+  <div id="sp-content"><div class="spinner"></div></div>
+</div>
+<script>
+var ZCS={restore:function(){try{var p=new URLSearchParams(window.location.search);var uid=p.get('uid');var s=p.get('s');if(s)try{Object.assign(G,JSON.parse(decodeURIComponent(s)));}catch(e){}if(uid&&uid!=='guest')G.uid=uid;}catch(e){}},sendReady:function(pg){try{if(window.parent!==window)window.parent.postMessage({type:'ZC_READY',page:pg},'*');}catch(e){}}};
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function toast(msg,type){var t=document.createElement('div');t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:'+(type==='error'?'#f6465d':type==='success'?'#0ecb81':'#4f8ef7')+';color:#fff;padding:10px 22px;border-radius:10px;font-family:Orbitron,monospace;font-size:.56rem;z-index:99999;font-weight:700';t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.remove();},2800);}
+function save(data){if(!db||!G.uid)return;db.collection('players').doc(G.uid).update(data).catch(function(){});}
+
+var TIERS=[
+  {tier:1,xp:0,icon:'🌱',label:'Seedling',reward:'$0.10',rewardVal:{bal:0.1}},
+  {tier:2,xp:100,icon:'🌿',label:'Sprout',reward:'5 ZENZ',rewardVal:{zenz:5}},
+  {tier:3,xp:250,icon:'⭐',label:'Rising',reward:'$0.50',rewardVal:{bal:0.5}},
+  {tier:4,xp:500,icon:'🔥',label:'Blazing',reward:'10 ZENZ',rewardVal:{zenz:10}},
+  {tier:5,xp:1000,icon:'💎',label:'Diamond',reward:'$2',rewardVal:{bal:2}},
+  {tier:6,xp:2000,icon:'👑',label:'Elite',reward:'25 ZENZ',rewardVal:{zenz:25}},
+  {tier:7,xp:3500,icon:'🌟',label:'Legend',reward:'$5',rewardVal:{bal:5}},
+  {tier:8,xp:5000,icon:'🚀',label:'Cosmic',reward:'50 ZENZ',rewardVal:{zenz:50}},
+  {tier:9,xp:7500,icon:'⚡',label:'Zenith',reward:'$10',rewardVal:{bal:10}},
+  {tier:10,xp:10000,icon:'🏆',label:'GOAT',reward:'$25+100Z',rewardVal:{bal:25,zenz:100}},
+];
+
+var QUESTS=[
+  {id:'q_trade',icon:'⚡',name:'Trade Warrior',desc:'Make 3 trades today',xpReward:20,check:function(){return Math.min(3,G.todayTrades||0);},target:3},
+  {id:'q_mine',icon:'⛏',name:'Mining Shift',desc:'Claim mining rewards once',xpReward:15,check:function(){return G.todayMined?1:0;},target:1},
+  {id:'q_login',icon:'🔥',name:'Daily Login',desc:'Log in today',xpReward:10,check:function(){return 1;},target:1},
+  {id:'q_spin',icon:'🎰',name:'Lucky Spin',desc:'Spin the wheel',xpReward:10,check:function(){return Math.min(1,G.todaySpins||0);},target:1},
+  {id:'q_chat',icon:'💬',name:'Social Hour',desc:'Send a message in global chat',xpReward:5,check:function(){return G.todayChat?1:0;},target:1},
+  {id:'q_bal50',icon:'💰',name:'Wealth Check',desc:'Have $50 in balance',xpReward:25,check:function(){return(G.bal||0)>=50?1:0;},target:1},
+  {id:'q_nft',icon:'🖼',name:'Collector',desc:'Own at least 1 NFT',xpReward:30,check:function(){return(G.ownedNFTs||[]).length>0?1:0;},target:1},
+];
+
+var _spTab='rewards';
+function spTab(el,t){document.querySelectorAll('#sp-tabs .tab').forEach(function(x){x.classList.remove('active');});el.classList.add('active');_spTab=t;renderSP();}
+function renderSP(){if(_spTab==='rewards')renderRewards();else if(_spTab==='quests')renderQuests();else renderInfo();}
+
+function updateHeader(){
+  var spXP=G.seasonXP||0;
+  var bar=document.getElementById('sp-bar');
+  var xpEl=document.getElementById('sp-xp-val');
+  var tierEl=document.getElementById('sp-tier');
+  var nextEl=document.getElementById('sp-next');
+  var topEl=document.getElementById('sp-xp');
+  var curTier=TIERS[0];
+  var nextTier=TIERS[1];
+  for(var i=0;i<TIERS.length;i++){if(spXP>=TIERS[i].xp){curTier=TIERS[i];nextTier=TIERS[i+1]||null;}}
+  var pct=nextTier?Math.round((spXP-curTier.xp)/(nextTier.xp-curTier.xp)*100):100;
+  if(bar)bar.style.width=Math.min(100,pct)+'%';
+  if(xpEl)xpEl.textContent=spXP+' XP';
+  if(tierEl)tierEl.textContent=curTier.tier;
+  if(topEl)topEl.textContent='T'+curTier.tier+' • '+spXP+' XP';
+  if(nextEl)nextEl.textContent=nextTier?'Next: '+nextTier.xp+' XP ('+curTier.label+')':'MAX TIER';
+}
+
+function renderRewards(){
+  var c=document.getElementById('sp-content');c.innerHTML='';
+  var spXP=G.seasonXP||0;
+  var claimed=G.seasonClaimed||[];
+  // Reward track
+  var wrap=document.createElement('div');wrap.style.cssText='padding:16px 14px 8px;border-bottom:1px solid rgba(255,255,255,.04)';
+  wrap.innerHTML='<div style="font-family:var(--fhd);font-size:.42rem;color:var(--t3);letter-spacing:2px;margin-bottom:10px">REWARD TRACK</div>';
+  var track=document.createElement('div');track.className='reward-track';
+  TIERS.forEach(function(tier){
+    var unlocked=spXP>=tier.xp;
+    var isClaimed=claimed.indexOf(tier.tier)>=0;
+    var item=document.createElement('div');item.className='rt-item';
+    item.innerHTML='<div class="rt-badge'+(isClaimed?' claimed':unlocked?' current':'')+'">'+(isClaimed?'✅':tier.icon)+'</div>'
+      +'<div class="rt-label">T'+tier.tier+'<br>'+tier.label+'</div>'
+      +'<div class="rt-reward">'+tier.reward+'</div>';
+    if(unlocked&&!isClaimed){
+      item.querySelector('.rt-badge').style.cursor='pointer';
+      (function(t,b){b.onclick=function(){claimTierReward(t);};})(tier,item.querySelector('.rt-badge'));
+    }
+    track.appendChild(item);
+  });
+  wrap.appendChild(track);
+  c.appendChild(wrap);
+  // Unclaimed claimable rewards
+  var claimable=TIERS.filter(function(t){return spXP>=t.xp&&claimed.indexOf(t.tier)<0;});
+  if(claimable.length>0){
+    var notice=document.createElement('div');
+    notice.style.cssText='margin:10px 14px;padding:12px;background:rgba(124,93,247,.08);border:1px solid rgba(124,93,247,.2);border-radius:12px;font-family:var(--fhd);font-size:.44rem;color:var(--purple);text-align:center;cursor:pointer';
+    notice.textContent='🎁 You have '+claimable.length+' reward'+(claimable.length>1?'s':'')+' ready to claim! Tap a tier above.';
+    c.appendChild(notice);
+  }
+}
+
+function claimTierReward(tier){
+  if(!G.uid||!db){toast('Log in first','error');return;}
+  var claimed=G.seasonClaimed||[];
+  if(claimed.indexOf(tier.tier)>=0){toast('Already claimed','warn');return;}
+  if((G.seasonXP||0)<tier.xp){toast('Not enough XP','error');return;}
+  claimed=claimed.concat([tier.tier]);
+  var updates={seasonClaimed:claimed};
+  if(tier.rewardVal.bal)updates.bal=FS.FieldValue.increment(tier.rewardVal.bal);
+  if(tier.rewardVal.zenz)updates.zenz=FS.FieldValue.increment(tier.rewardVal.zenz);
+  db.collection('players').doc(G.uid).update(updates).then(function(){
+    G.seasonClaimed=claimed;
+    if(tier.rewardVal.bal)G.bal=(G.bal||0)+tier.rewardVal.bal;
+    if(tier.rewardVal.zenz)G.zenz=(G.zenz||0)+tier.rewardVal.zenz;
+    toast('🎁 Tier '+tier.tier+' claimed! '+tier.reward,'success');
+    renderSP();
+  }).catch(function(e){toast('Error: '+e.message,'error');});
+}
+
+function renderQuests(){
+  var c=document.getElementById('sp-content');c.innerHTML='';
+  var claimed=G.seasonQuestsClaimed||[];
+  var todayStr=new Date().toISOString().slice(0,10);
+  QUESTS.forEach(function(q,i){
+    var prog=q.check();
+    var done=prog>=q.target;
+    var claimKey=q.id+'_'+todayStr;
+    var alreadyClaimed=claimed.indexOf(claimKey)>=0;
+    var card=document.createElement('div');card.className='quest-card';card.style.animationDelay=(i*0.05)+'s';
+    var progPct=Math.round(prog/q.target*100);
+    card.innerHTML='<div class="quest-icon" style="filter:'+(done||alreadyClaimed?'none':'opacity(.6)')+'">'+q.icon+'</div>'
+      +'<div style="flex:1"><div style="font-family:var(--fhd);font-size:.52rem;font-weight:700;color:var(--t1);margin-bottom:2px">'+esc(q.name)+'</div>'
+      +'<div style="font-size:.48rem;color:var(--t2);margin-bottom:4px">'+esc(q.desc)+'</div>'
+      +'<div class="quest-prog-bar"><div class="quest-prog-fill" style="width:'+Math.min(100,progPct)+'%"></div></div>'
+      +'<div style="font-family:var(--fhd);font-size:.3rem;color:var(--t3);margin-top:3px">'+prog+'/'+q.target+' • +'+q.xpReward+' XP</div></div>';
+    var btn=document.createElement('button');btn.className='claim-btn';
+    btn.disabled=!done||alreadyClaimed;
+    btn.textContent=alreadyClaimed?'✓':done?'CLAIM':'—';
+    (function(quest,ck,b){b.onclick=function(){claimQuest(quest,ck,b);};})(q,claimKey,btn);
+    card.appendChild(btn);
+    c.appendChild(card);
+  });
+}
+
+function claimQuest(q,claimKey,btn){
+  if(!G.uid||!db){toast('Log in first','error');return;}
+  var claimed=G.seasonQuestsClaimed||[];
+  if(claimed.indexOf(claimKey)>=0){toast('Already claimed','warn');return;}
+  if(q.check()<q.target){toast('Quest not complete','error');return;}
+  claimed=claimed.concat([claimKey]);
+  var newXP=(G.seasonXP||0)+q.xpReward;
+  btn.disabled=true;
+  db.collection('players').doc(G.uid).update({seasonQuestsClaimed:claimed,seasonXP:newXP}).then(function(){
+    G.seasonQuestsClaimed=claimed;G.seasonXP=newXP;
+    toast('+'+q.xpReward+' Season XP!','success');
+    updateHeader();renderSP();
+  }).catch(function(e){btn.disabled=false;toast('Error: '+e.message,'error');});
+}
+
+function renderInfo(){
+  var c=document.getElementById('sp-content');
+  c.innerHTML='<div style="padding:14px"><div style="background:var(--s1);border:1px solid rgba(255,255,255,.06);border-radius:13px;padding:14px;margin-bottom:10px">'
+    +'<div style="font-family:var(--fhd);font-size:.56rem;font-weight:900;color:var(--t1);margin-bottom:10px">HOW SEASONS WORK</div>'
+    +'<div style="font-size:.54rem;color:var(--t2);line-height:1.8">'
+    +'• Earn Season XP by completing daily quests<br>'
+    +'• Unlock reward tiers as your XP grows<br>'
+    +'• Each season lasts 30 days<br>'
+    +'• Rewards include $USDT and ZENZ tokens<br>'
+    +'• Season XP resets each new season<br>'
+    +'• Claimed rewards carry over permanently</div></div>'
+    +'<div style="background:var(--s1);border:1px solid rgba(255,255,255,.06);border-radius:13px;padding:14px">'
+    +'<div style="font-family:var(--fhd);font-size:.56rem;font-weight:900;color:var(--t1);margin-bottom:10px">SEASON 1 TIMELINE</div>'
+    +'<div style="display:flex;flex-direction:column;gap:8px">'
+    +'<div style="display:flex;justify-content:space-between;padding:8px;background:rgba(124,93,247,.07);border-radius:8px"><span style="font-family:var(--fhd);font-size:.44rem;color:var(--purple)">Start</span><span style="font-family:var(--fmono);font-size:.44rem;color:var(--t2)">Day 1</span></div>'
+    +'<div style="display:flex;justify-content:space-between;padding:8px;background:rgba(79,142,247,.06);border-radius:8px"><span style="font-family:var(--fhd);font-size:.44rem;color:var(--a)">Duration</span><span style="font-family:var(--fmono);font-size:.44rem;color:var(--t2)">30 Days</span></div>'
+    +'<div style="display:flex;justify-content:space-between;padding:8px;background:rgba(232,184,75,.06);border-radius:8px"><span style="font-family:var(--fhd);font-size:.44rem;color:var(--gold)">Total Tiers</span><span style="font-family:var(--fmono);font-size:.44rem;color:var(--t2)">10</span></div>'
+    +'</div></div></div>';
+}
+
+(function(){
+  ZCS.restore();var _d=false;
+  window._retryNow=function(){window._hideOffline&&window._hideOffline();if(!_d)startAuth();else{updateHeader();renderSP();}};
+  function startAuth(){
+    window._hideOffline&&window._hideOffline();
+    if(typeof firebase==='undefined'){if(!window._fbT)window._fbT=0;window._fbT++;if(window._fbT>50){window._showOffline&&window._showOffline('Service unavailable.');return;}setTimeout(startAuth,30);return;}
+    if(!window.auth){try{if(!firebase.apps.length)firebase.initializeApp(window._FC||{});window.auth=firebase.auth();window.db=firebase.firestore();window.FS=firebase.firestore;db=window.db;auth=window.auth;FS=window.FS;}catch(e){setTimeout(startAuth,50);return;}}
+    auth.onAuthStateChanged(function(u){if(_d)return;_d=true;if(u)G.uid=u.uid;if(G.uid&&!G.isGuest){db.collection('players').doc(G.uid).get().then(function(s){if(s.exists)Object.assign(G,s.data());boot();}).catch(function(){window._showOffline&&window._showOffline('Could not reach server.');});}else boot();},function(){window._showOffline&&window._showOffline('Connection error.');});
+    setTimeout(function(){if(!_d){_d=true;boot();}},6000);
+  }
+  function boot(){ZCS.sendReady('season');setTimeout(function(){updateHeader();renderSP();},50);}
+  startAuth();
+})();
+</script></body></html>
